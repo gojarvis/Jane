@@ -1,6 +1,9 @@
 /**
  * Module dependencies.
  */
+
+var Schema = require('jugglingdb').Schema;
+ 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     crypto = require('crypto'),

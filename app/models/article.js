@@ -1,16 +1,22 @@
 /**
  * Module dependencies.
  */
+
+var Schema = require('jugglingdb').Schema;
+var schema = new Schema('mongodb', {url: 'mongodb://localhost/mean-dev'});
+// var schema = new Schema('redis', {port: 6379});
+
+
 var mongoose = require('mongoose'),
     env = process.env.NODE_ENV || 'development',
-    config = require('../../config/config')[env],
-    Schema = mongoose.Schema;
+    config = require('../../config/config')[env];
+    // Schema = mongoose.Schema;
 
 
 /**
  * Article Schema
  */
-var ArticleSchema = new Schema({
+var Article = schema.define('Article',{
     created: {
         type: Date,
         default: Date.now
@@ -26,7 +32,7 @@ var ArticleSchema = new Schema({
         trim: true
     },
     user: {
-        type: Schema.ObjectId,
+        type: String,
         ref: 'User'
     }
 });
@@ -34,7 +40,7 @@ var ArticleSchema = new Schema({
 /**
  * Statics
  */
-ArticleSchema.statics = {
+Article.prototype.statics = {
     load: function(id, cb) {
         this.findOne({
             _id: id
@@ -42,4 +48,6 @@ ArticleSchema.statics = {
     }
 };
 
-mongoose.model('Article', ArticleSchema);
+// schema.model('Article', ArticleSchema);
+
+schema.models.Article;
