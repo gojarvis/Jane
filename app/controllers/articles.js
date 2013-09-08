@@ -1,9 +1,14 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    async = require('async'),
-    Article = mongoose.model('Article'),
+var env = process.env.NODE_ENV || 'development',
+    config = require('../../config/config')[env],
+    Schema = require('jugglingdb').Schema,
+    schema = new Schema('mongodb', {url: config.db}),
+    Article = require("../models/article");
+    
+
+var async = require('async'),    
     _ = require('underscore');
 
 
@@ -11,9 +16,9 @@ var mongoose = require('mongoose'),
  * Find article by id
  */
 exports.article = function(req, res, next, id) {
-    var User = mongoose.model('User');
+    var User = schema.models.User;
 
-    Article.load(id, function(err, article) {
+    Article.find(id, function(err, article) {
         if (err) return next(err);
         if (!article) return next(new Error('Failed to load article ' + id));
         req.article = article;
@@ -26,10 +31,11 @@ exports.article = function(req, res, next, id) {
  */
 exports.create = function(req, res) {
     var article = new Article(req.body);
-
-    article.user = req.user;
-    article.save();
-    res.jsonp(article);
+    article.user_id = req.user.id;    
+    article.save(function(err,article){
+        res.jsonp(article);    
+    });
+    
 };
 
 /**
@@ -66,14 +72,16 @@ exports.destroy = function(req, res) {
  * Show an article
  */
 exports.show = function(req, res) {
-    res.jsonp(req.article);
+    req.article.user(function(err, user) {
+        res.jsonp(req.article);    
+    });
 };
 
 /**
  * List of Articles
  */
 exports.all = function(req, res) {
-    Article.find().sort('-created').populate('user').exec(function(err, articles) {
+    Article.all(function(err, articles) {
         if (err) {
             res.render('error', {
                 status: 500

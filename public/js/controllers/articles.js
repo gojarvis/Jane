@@ -7,7 +7,7 @@ function ArticlesController($scope, $routeParams, $location, Global, Articles) {
             content: this.content
         });
         article.$save(function(response) {
-            $location.path("articles/" + response._id);
+            $location.path("articles/" + response.id);
         });
 
         this.title = "";
@@ -32,7 +32,7 @@ function ArticlesController($scope, $routeParams, $location, Global, Articles) {
         article.updated.push(new Date().getTime());
 
         article.$update(function() {
-            $location.path('articles/' + article._id);
+            $location.path('articles/' + article.id);
         });
     };
 

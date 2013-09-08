@@ -1,10 +1,12 @@
-var mongoose = require('mongoose'),
+var Schema = require('jugglingdb').Schema;
+var schema = new Schema('mongodb', {url: 'mongodb://localhost/jugg'}),
+
     LocalStrategy = require('passport-local').Strategy,
     TwitterStrategy = require('passport-twitter').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
     GitHubStrategy = require('passport-github').Strategy,
     GoogleStrategy = require('passport-google-oauth').Strategy,
-    User = mongoose.model('User');
+    User = require("../app/models/user");
 
 
 module.exports = function(passport, config) {

@@ -1,12 +1,12 @@
 /**
  * Module dependencies.
  */
+var env = process.env.NODE_ENV || 'development',
+    config = require('../../config/config')[env],
+    Schema = require('jugglingdb').Schema,
+    schema = new Schema('mongodb', {url: config.db});
 
-var Schema = require('jugglingdb').Schema;
- 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    crypto = require('crypto'),
+var crypto = require('crypto'),
     _ = require('underscore'),
     authTypes = ['github', 'twitter', 'facebook', 'google'];
 
@@ -14,29 +14,25 @@ var mongoose = require('mongoose'),
 /**
  * User Schema
  */
-var UserSchema = new Schema({
+var User = schema.define('User',{
     name: String,
     email: String,
     username: String,
     provider: String,
     hashed_password: String,
-    salt: String,
-    facebook: {},
-    twitter: {},
-    github: {},
-    google: {}
+    salt: String
 });
 
 /**
  * Virtuals
  */
-UserSchema.virtual('password').set(function(password) {
-    this._password = password;
-    this.salt = this.makeSalt();
-    this.hashed_password = this.encryptPassword(password);
-}).get(function() {
-    return this._password;
-});
+// User.prototype.virtualPassword = ('password').set(function(password) {
+//     this._password = password;
+//     this.salt = this.makeSalt();
+//     this.hashed_password = this.encryptPassword(password);
+// }).get(function() {
+//     return this._password;
+// });
 
 /**
  * Validations
@@ -46,47 +42,47 @@ var validatePresenceOf = function(value) {
 };
 
 // the below 4 validations only apply if you are signing up traditionally
-UserSchema.path('name').validate(function(name) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return name.length;
-}, 'Name cannot be blank');
+// UserSchema.path('name').validate(function(name) {
+//     // if you are authenticating by any of the oauth strategies, don't validate
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return name.length;
+// }, 'Name cannot be blank');
 
-UserSchema.path('email').validate(function(email) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return email.length;
-}, 'Email cannot be blank');
+// UserSchema.path('email').validate(function(email) {
+//     // if you are authenticating by any of the oauth strategies, don't validate
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return email.length;
+// }, 'Email cannot be blank');
 
-UserSchema.path('username').validate(function(username) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return username.length;
-}, 'Username cannot be blank');
+// UserSchema.path('username').validate(function(username) {
+//     // if you are authenticating by any of the oauth strategies, don't validate
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return username.length;
+// }, 'Username cannot be blank');
 
-UserSchema.path('hashed_password').validate(function(hashed_password) {
-    // if you are authenticating by any of the oauth strategies, don't validate
-    if (authTypes.indexOf(this.provider) !== -1) return true;
-    return hashed_password.length;
-}, 'Password cannot be blank');
+// UserSchema.path('hashed_password').validate(function(hashed_password) {
+//     // if you are authenticating by any of the oauth strategies, don't validate
+//     if (authTypes.indexOf(this.provider) !== -1) return true;
+//     return hashed_password.length;
+// }, 'Password cannot be blank');
 
 
 /**
  * Pre-save hook
  */
-UserSchema.pre('save', function(next) {
-    if (!this.isNew) return next();
+// UserSchema.pre('save', function(next) {
+//     if (!this.isNew) return next();
 
-    if (!validatePresenceOf(this.password) && authTypes.indexOf(this.provider) === -1)
-        next(new Error('Invalid password'));
-    else
-        next();
-});
+//     if (!validatePresenceOf(this.password) && authTypes.indexOf(this.provider) === -1)
+//         next(new Error('Invalid password'));
+//     else
+//         next();
+// });
 
 /**
  * Methods
  */
-UserSchema.methods = {
+User.methods = {
     /**
      * Authenticate - check if the passwords are the same
      *
@@ -121,4 +117,5 @@ UserSchema.methods = {
     }
 };
 
-mongoose.model('User', UserSchema);
+
+module.exports = schema.models.User;

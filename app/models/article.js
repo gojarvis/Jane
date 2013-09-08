@@ -3,12 +3,11 @@
  */
 
 var Schema = require('jugglingdb').Schema;
-var schema = new Schema('mongodb', {url: 'mongodb://localhost/mean-dev'});
-// var schema = new Schema('redis', {port: 6379});
+var schema = new Schema('mongodb', {url: 'mongodb://localhost/jugg'});
 
+var User = require('./user');
 
-var mongoose = require('mongoose'),
-    env = process.env.NODE_ENV || 'development',
+var env = process.env.NODE_ENV || 'development',
     config = require('../../config/config')[env];
     // Schema = mongoose.Schema;
 
@@ -31,23 +30,19 @@ var Article = schema.define('Article',{
         default: '',
         trim: true
     },
-    user: {
-        type: String,
-        ref: 'User'
-    }
+    user_id  : {type : String}
+
 });
 
-/**
- * Statics
- */
-Article.prototype.statics = {
-    load: function(id, cb) {
-        this.findOne({
-            _id: id
-        }).populate('user').exec(cb);
-    }
-};
+
+
+Article.belongsTo(User, {as: 'user', foreignKey: 'user_id'});
+
+
+Article.load = function (id, cb) {
+  this.find(id, cb);
+}
 
 // schema.model('Article', ArticleSchema);
 
-schema.models.Article;
+module.exports = schema.models.Article;

@@ -1,8 +1,11 @@
 /**
  * Module dependencies.
  */
-var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+
+var Schema = require('jugglingdb').Schema,
+    schema = new Schema('mongodb', {url: 'mongodb://localhost/jugg'}),
+    User = require("../models/user");
+
 
 /**
  * Auth callback
@@ -25,6 +28,9 @@ exports.signin = function(req, res) {
  * Show sign up form
  */
 exports.signup = function(req, res) {
+
+    console.log("user",User);
+
     res.render('users/signup', {
         title: 'Sign up',
         user: new User()
@@ -90,14 +96,10 @@ exports.me = function(req, res) {
  * Find user by id
  */
 exports.user = function(req, res, next, id) {
-    User
-        .findOne({
-            _id: id
-        })
-        .exec(function(err, user) {
-            if (err) return next(err);
-            if (!user) return next(new Error('Failed to load User ' + id));
-            req.profile = user;
-            next();
-        });
+    User.find(id, function (err, user) {
+        if (err) return next(err);
+        if (!user) return next(new Error('Failed to load User ' + id));
+        req.profile = user;
+        next();
+    });
 };
