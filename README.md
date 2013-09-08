@@ -90,13 +90,9 @@ If you are using node instead of grunt, it is very similar:
 ## JANE Modules
    JANE presents a growing eco-system of JANE based modules in the npm repository, To write (and contribute) your own JANE based module checkout [JANE-logger](https://npmjs.org/package/JANE-logger) for examples.
   
-## More Information
-
-  * Visit our [Ninja's Zone](http://www.JANEleanstartupmachine.com/) for extended support.
-  * Visit us at [Linnovate.net](http://www.linnovate.net/).
-  * Contact amos on any issue via [E-Mail](mailto:mail@amoshaviv.com), [Facebook](http://www.facebook.com/amoshaviv), or [Twitter](http://www.twitter.com/amoshaviv).
 
 ## Credits
+Built on Mean.io by [Amos Haviv](https://github.com/amoshaviv) (which is sponsored by [Linnovate](https://github.com/linnovate/mean))
 Inspired by the great work of [Madhusudhan Srinivasa](https://github.com/madhums/)
 
 ## License
