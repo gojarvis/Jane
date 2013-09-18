@@ -1,6 +1,8 @@
 # JANE Stack
 
-JANE is a boilerplate that provides a nice starting point for [JugglingDB](http://jugglingdb.co/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/) based applications. It is designed to give you quick and organized way to start developing of JANE based web apps with useful modules like mongoose and passport pre-bundled and configured. We mainly try to take care of the connection points between existing popular frameworks and solve common integration problems.  
+JANE is a boilerplate that provides a nice starting point for [JugglingDB](http://jugglingdb.co/), [Node.js](http://www.nodejs.org/), [Express](http://expressjs.com/), and [AngularJS](http://angularjs.org/) based applications. It is based on [Mean.io](http://mean.io), with the one difference of using Juggling DB instead of just on MongoDB. It also uses the [Mean edge](http://github.com/amoshaviv/mean) as a starting point. 
+
+Like Mean.io, it is designed to give you quick and organized way to start developing of JANE based web apps with useful modules like mongoose and passport pre-bundled and configured. We mainly try to take care of the connection points between existing popular frameworks and solve common integration problems.  
 
 ## Prerequisites
 * Node.js - Download and Install [Node.js](http://www.nodejs.org/download/). You can also follow [this gist](https://gist.github.com/isaacs/579814) for a quick and easy way to install Node.js and npm
